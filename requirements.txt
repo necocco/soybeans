@@ -7,10 +7,7 @@ natsort
 torch
 streamlit
 utils
-fastapi
-uvicorn
 python-multipart
-matplotlib
 pyttsx3
 pywin32
 pygame
