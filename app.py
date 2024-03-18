@@ -6,7 +6,6 @@ from model import Net
 import time
 from PIL import Image, ExifTags
 import base64
-import pygame
 import random
 import os
 from PIL import Image
@@ -79,9 +78,9 @@ except (AttributeError, KeyError, IndexError):
 st.sidebar.image(img, use_column_width=True)
 
 def main():
-    # Pygameの初期化
-    pygame.init()
-    pygame.mixer.init()
+    # # Pygameの初期化
+    # pygame.init()
+    # pygame.mixer.init()
 
 
     # コンテンツを追加
@@ -113,28 +112,28 @@ def main():
 
     if button:
         # 音声ファイルのリストを準備する
-        audio_files = ['./sound/ResNet34romanticFolk.mp3', './sound/ResNet34uplifting metal_Audio Trimmer.mp3','./sound/resnet34sanba1.mp3','./sound/resnet34sanba2.mp3','./sound/ResNet34Folk.mp3']
+        # audio_files = ['./sound/ResNet34romanticFolk.mp3', './sound/ResNet34uplifting metal_Audio Trimmer.mp3','./sound/resnet34sanba1.mp3','./sound/resnet34sanba2.mp3','./sound/ResNet34Folk.mp3']
         
         # ランダムに音声ファイルを選択する
-        audio_path = random.choice(audio_files)
+        # audio_path = random.choice(audio_files)
 
-        audio_placeholder = st.empty()
+        # audio_placeholder = st.empty()
 
-        file_ = open(audio_path, "rb")
-        contents = file_.read()
-        file_.close()
+        # file_ = open(audio_path, "rb")
+        # contents = file_.read()
+        # file_.close()
 
-        audio_str = "data:audio/ogg;base64,%s" % (base64.b64encode(contents).decode())
-        audio_html = """
-                        <audio autoplay=True>
-                        <source src="%s" type="audio/ogg" autoplay=True>
-                        Your browser does not support the audio element.
-                        </audio>
-                    """ % audio_str
+        # audio_str = "data:audio/ogg;base64,%s" % (base64.b64encode(contents).decode())
+        # audio_html = """
+        #                 <audio autoplay=True>
+        #                 <source src="%s" type="audio/ogg" autoplay=True>
+        #                 Your browser does not support the audio element.
+        #                 </audio>
+        #             """ % audio_str
 
-        audio_placeholder.empty()
-        time.sleep(0.5) #これがないと上手く再生されません
-        audio_placeholder.markdown(audio_html, unsafe_allow_html=True)
+        # audio_placeholder.empty()
+        # time.sleep(0.5) #これがないと上手く再生されません
+        # audio_placeholder.markdown(audio_html, unsafe_allow_html=True)
 
 
 
@@ -178,7 +177,7 @@ def main():
         st.write('© Made With Suno')
         
         for percent_complete in range(100):
-            time.sleep(0.13)
+            time.sleep(0.03)
             my_bar.progress(percent_complete + 1, text=progress_text)
         time.sleep(1)
         my_bar.empty()
@@ -246,79 +245,79 @@ def main():
         true_value = label  # ここに正解の値を設定
 
         
-        image_to_audio = {
-            "01.jpg": "./sound/normalChild.mp3",
-            "02.jpg": "./sound/kurumi.mp3",
-            "03.jpg": "./sound/ninniku.mp3",
-            "04.jpg": "./sound/normalChild.mp3",
-            "05.jpg": "./sound/goodChild.mp3",
-            "06.jpg": "./sound/normalChild.mp3",
-            "07.jpg": "./sound/uzuramame.mp3",
-            "08.jpg": "./sound/goodChild.mp3",
-            "09.jpg": "./sound/badChild.mp3",
-            "10.jpg": "./sound/normalChild.mp3",
-            "11.jpg": "./sound/goodChild.mp3",
-            "12.jpg": "./sound/kuroninniku.mp3",
-            "13.jpg": "./sound/normalChild.mp3",
-            "14.jpg": "./sound/badChild.mp3",
-            "15.jpg": "./sound/hanamame.mp3",
-            "16.jpg": "./sound/kurogoma.mp3",
-            "17.jpg": "./sound/badChild.mp3",
-            "18.jpg": "./sound/goodChild.mp3",
-            "19.jpg": "./sound/badChild.mp3",
-            "20.jpg": "./sound/sirohanamame.mp3",
-            "21.jpg": "./sound/kuroninniku.mp3",
-            "22.jpg": "./sound/badChild.mp3",
-            "23.jpg": "./sound/aobatamame.mp3",
-            # 他の画像ファイル名とそれに対応する音源ファイル名も追加します
-            }
+        # image_to_audio = {
+        #     "01.jpg": "./sound/normalChild.mp3",
+        #     "02.jpg": "./sound/kurumi.mp3",
+        #     "03.jpg": "./sound/ninniku.mp3",
+        #     "04.jpg": "./sound/normalChild.mp3",
+        #     "05.jpg": "./sound/goodChild.mp3",
+        #     "06.jpg": "./sound/normalChild.mp3",
+        #     "07.jpg": "./sound/uzuramame.mp3",
+        #     "08.jpg": "./sound/goodChild.mp3",
+        #     "09.jpg": "./sound/badChild.mp3",
+        #     "10.jpg": "./sound/normalChild.mp3",
+        #     "11.jpg": "./sound/goodChild.mp3",
+        #     "12.jpg": "./sound/kuroninniku.mp3",
+        #     "13.jpg": "./sound/normalChild.mp3",
+        #     "14.jpg": "./sound/badChild.mp3",
+        #     "15.jpg": "./sound/hanamame.mp3",
+        #     "16.jpg": "./sound/kurogoma.mp3",
+        #     "17.jpg": "./sound/badChild.mp3",
+        #     "18.jpg": "./sound/goodChild.mp3",
+        #     "19.jpg": "./sound/badChild.mp3",
+        #     "20.jpg": "./sound/sirohanamame.mp3",
+        #     "21.jpg": "./sound/kuroninniku.mp3",
+        #     "22.jpg": "./sound/badChild.mp3",
+        #     "23.jpg": "./sound/aobatamame.mp3",
+        #     # 他の画像ファイル名とそれに対応する音源ファイル名も追加します
+        #     }
         
         
 
         if  prediction_class == true_value:
             st.write("**予測が正解と一致しました。**")
 
-            # 一致した場合の音を再生
-            sound_file_correct = "./sound/QuizOK.mp3"  # 一致した場合の音声ファイルのパスを設定
-            pygame.mixer.music.load(sound_file_correct)
-            pygame.mixer.music.play()
+            # # 一致した場合の音を再生
+            # sound_file_correct = "./sound/QuizOK.mp3"  # 一致した場合の音声ファイルのパスを設定
+            # pygame.mixer.music.load(sound_file_correct)
+            # pygame.mixer.music.play()
 
-            # 正解音が終わるまで待機
-            while pygame.mixer.music.get_busy():
-                time.sleep(0.1)
+            # # 正解音が終わるまで待機
+            # while pygame.mixer.music.get_busy():
+            #     time.sleep(0.1)
 
-            # 正解音が終わった後に画像に対応する音声を再生
-            if selected_image_file in image_to_audio:
-                audio_path = image_to_audio[selected_image_file]
-                pygame.mixer.music.load(audio_path)
-                pygame.mixer.music.play()
-                st.write('©ナレーション：音読さん')
+            # # 正解音が終わった後に画像に対応する音声を再生
+            # if selected_image_file in image_to_audio:
+            #     audio_path = image_to_audio[selected_image_file]
+            #     pygame.mixer.music.load(audio_path)
+            #     pygame.mixer.music.play()
+            #     st.write('©ナレーション：音読さん')
 
-            # 音声再生が終了するまで待機
-            while pygame.mixer.music.get_busy():
-                time.sleep(0.1)
+            # # 音声再生が終了するまで待機
+            # while pygame.mixer.music.get_busy():
+            #     time.sleep(0.1)
         else:
             st.write("**予測が正解と一致しません。**")
 
-            # 異なった場合の音を再生
-            sound_file_incorrect = "./sound/clumsy2.mp3"  # 異なった場合の音声ファイルのパスを設定
-            pygame.mixer.music.load(sound_file_incorrect)
-            pygame.mixer.music.play()
+            # # 異なった場合の音を再生
+            # sound_file_incorrect = "./sound/clumsy2.mp3"  # 異なった場合の音声ファイルのパスを設定
+            # pygame.mixer.music.load(sound_file_incorrect)
+            # pygame.mixer.music.play()
 
-            # 音声再生が終了するまで待機
-            while pygame.mixer.music.get_busy():
-                time.sleep(0.1)
+            # # 音声再生が終了するまで待機
+            # while pygame.mixer.music.get_busy():
+            #     time.sleep(0.1)
 
-            # 画像に対応する音声を再生
-            if selected_image_file in image_to_audio:
-                audio_path = image_to_audio[selected_image_file]
-                pygame.mixer.music.load(audio_path)
-                pygame.mixer.music.play()
-                st.write('ナレーション　音読さん')
+            # # 画像に対応する音声を再生
+            # if selected_image_file in image_to_audio:
+            #     audio_path = image_to_audio[selected_image_file]
+            #     pygame.mixer.music.load(audio_path)
+            #     pygame.mixer.music.play()
+            #     st.write('ナレーション　音読さん')
 
-            # 音声再生が終了するまで待機
-            while pygame.mixer.music.get_busy():
-                time.sleep(0.1)
+            # # 音声再生が終了するまで待機
+            # while pygame.mixer.music.get_busy():
+            #     time.sleep(0.1)
 
             # 予測されたテンソルの値を取得
         predicted_values = outputs.squeeze().tolist()
