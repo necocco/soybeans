@@ -18,6 +18,9 @@ from torchmetrics.functional import accuracy
 import torch
 import streamlit as st
 import pandas as pd
+import plotly.graph_objects as go
+import playsound
+import plotly.express as px
 
 # モデルの定義
 # ここでモデルのアーキテクチャを定義して、重みをロードする必要があります
@@ -57,7 +60,7 @@ st.sidebar.write("**・わるい子**：品質が悪い大豆。鳥にあげま�
 st.sidebar.write("**・Really?　Soybeans??**：あなたはだぁれ？")
 
 # 画像の読み込み
-img = Image.open("./IMG_9162.JPG")
+img = Image.open("./IMG_9183-1.JPG")
 
 # Exif情報を取得し、向き情報を確認する
 try:
@@ -112,12 +115,12 @@ def main():
     button = st.button('start！')
 
     if button:
+     
         # 音声ファイルのリストを準備する
-        audio_files = ['./sound/ResNet34romanticFolk.mp3', './sound/ResNet34uplifting metal_Audio Trimmer.mp3','./sound/resnet34sanba1.mp3','./sound/resnet34sanba2.mp3','./sound/ResNet34Folk.mp3']
+        audio_files = ['./sound/ResNet34romanticFolk.mp3', './sound/resnet34chillReggae.mp3','./sound/resnet34sanba1.mp3','./sound/resnet34sanba2.mp3','./sound/ResNet34Folk.mp3','./sound/ResNet34upliftingMetal.mp3']
         
         # ランダムに音声ファイルを選択する
-        audio_path = random.choice(audio_files)
-
+        audio_path = random.choice(audio_files) 
         audio_placeholder = st.empty()
 
         file_ = open(audio_path, "rb")
@@ -236,16 +239,7 @@ def main():
             "23.jpg": "Really?　Soybeans?? 👻　なんだキミは？",
              }
 
-
-        #画像に対応する正解値を取得
-        if selected_image_file in image_to_label:
-            label = image_to_label[image_name]
-            st.write("正解:", label)
-
-        # Streamlitアプリの正解値
-        true_value = label  # ここに正解の値を設定
-
-        
+        #画像ファイル名と音源の対応表
         image_to_audio = {
             "01.jpg": "./sound/normalChild.mp3",
             "02.jpg": "./sound/kurumi.mp3",
@@ -273,7 +267,14 @@ def main():
             # 他の画像ファイル名とそれに対応する音源ファイル名も追加します
             }
         
-        
+
+        #画像に対応する正解値を取得
+        if selected_image_file in image_to_label:
+            label = image_to_label[image_name]
+            st.write("正解:", label)
+
+         # Streamlitアプリの正解値
+            true_value = label  # ここに正解の値を設定
 
         if  prediction_class == true_value:
             st.write("**予測が正解と一致しました。**")
@@ -320,20 +321,61 @@ def main():
             while pygame.mixer.music.get_busy():
                 time.sleep(0.1)
 
-            # 予測されたテンソルの値を取得
+          
+        
+        #予測確率をグラフで表示   
+        # 予測されたテンソルの値を取得
         predicted_values = outputs.squeeze().tolist()
 
+        
         # 予測されたテンソルの値をPandasのDataFrameに変換
         data = {'Class': list(labels.values()), 'Probability': predicted_values}
         df = pd.DataFrame(data)
 
-        # バーグラフを表示
-        st.bar_chart(df.set_index('Class'),height=0, width=320)
-        # st.write(f"予測: {outputs}")
+        # Plotlyを使用して棒グラフを作成し、幅を調整
+        fig = px.bar(df, x='Class', y='Probability')
+        fig.update_layout(width=500)  # 幅を調整
+        
+
+        # ラベルのクラスを取得
+        class_labels = list(labels.values())
+
+        # 予測確率を小数点第4位まで表示するために、predicted_valuesをフォーマットする
+        predicted_values_formatted = [f'{prob:.4f}' for prob in predicted_values]
+
+        # Plotlyのfigオブジェクトを作成
+        fig = go.Figure()
+
+        # バーを追加
+        fig.add_trace(go.Bar(
+            x=class_labels,
+            y=predicted_values,    
+            text=predicted_values_formatted,  # フォーマットした確率を表示
+            textposition='auto',  # テキストの位置を自動設定
+        ))
+
+        # レイアウトを設定
+        fig.update_layout(
+            title='Predicted Probabilities(予測確率)',
+            # xaxis=dict(title='Class'),
+            yaxis=dict(title='予測した確率'),
+        )
 
 
+       # StreamlitでPlotlyのグラフを表示
+        st.plotly_chart(fig)
 
 
-   
+        # # 予測されたテンソルの値をPandasのDataFrameに変換
+        # data = {'Class': list(labels.values()), 'Probability': predicted_values}
+        # df = pd.DataFrame(data)
+
+        # # バーグラフを表示
+        # # st.bar_chart(df.set_index('Class'),height=0, width=320)
+        # st.bar_chart(df.set_index('Class'), height=400, width=0.001)
+
+        # # st.write(f"予測: {outputs}")
+
+    
 if __name__ == "__main__":
     main()

@@ -55,8 +55,8 @@ st.sidebar.write("**・ふつうの子**：味噌等の加工用に使える大�
 st.sidebar.write("**・わるい子**：品質が悪い大豆。鳥にあげましょう")
 st.sidebar.write("**・Really?　Soybeans??**：あなたはだぁれ？")
 
-# 画像の読み込み
-img = Image.open("./IMG_9162.JPG")
+# サイドバーの画像の読み込み
+img = Image.open("./IMG_9183-1.JPG")
 
 # Exif情報を取得し、向き情報を確認する
 try:
@@ -174,7 +174,7 @@ def main():
         progress_text = "🎵なにがでるかな　なにがでるかな　それはResNet34任せよ～"
         my_bar = st.progress(0, text=progress_text) 
 
-        st.write('© Made With Suno')
+        # st.write('© Made With Suno')
         
         for percent_complete in range(100):
             time.sleep(0.03)
@@ -318,6 +318,45 @@ def main():
             # # 音声再生が終了するまで待機
             # while pygame.mixer.music.get_busy():
             #     time.sleep(0.1)
+
+        # 画像ファイル名とその対応する分類のマッピング
+        image_to_comment = {
+            "01.jpg": "味噌などの加工用大豆です",
+            "02.jpg": "なんだちみは？ そうです、私がクルミです。",
+            "03.jpg": "なんだちみは？ そうです、私がニンニクです。",
+            "04.jpg": "味噌などの加工用大豆です",
+            "05.jpg": "良質な大豆です。直売所で販売しましょう。",
+            "06.jpg": "味噌などの加工用大豆です",
+            "07.jpg": "なんだちみは？ そうです、私がうずら豆です。",
+            "08.jpg": "良質な大豆です。直売所で販売しましょう。",
+            "09.jpg": "残念な品質です。鳥さんにあげてね。",
+            "10.jpg": "味噌などの加工用大豆です",
+            "11.jpg": "良質な大豆です。直売所で販売しましょう。",
+            "12.jpg": "なんだちみは？ そうです、私が黒ニンニクです。",
+            "13.jpg": "味噌などの加工用大豆です",
+            "14.jpg": "残念な品質です。鳥さんにあげてね。",
+            "15.jpg": "なんだちみは？ そうです、私が花豆です。",
+            "16.jpg": "なんだちみは？ そうです、私が黒ゴマです。",
+            "17.jpg": "残念な品質です。鳥さんにあげてね。",
+            "18.jpg": "良質な大豆です。直売所で販売しましょう。",
+            "19.jpg": "残念な品質です。鳥さんにあげてね。",
+            "20.jpg": "なんだちみは？ そうです、私が白花豆です。",
+            "21.jpg": "なんだちみは？ そうです、私が黒ニンニクです。",
+            "22.jpg": "残念な品質です。鳥さんにあげてね。",
+            "23.jpg": "なんだちみは？ そうです、私が青ばた豆です。",
+        }
+
+        # 画像ファイル名を取得
+        image_name = os.path.basename(selected_image_file)
+
+        # 選択された画像のファイル名がマッピングされているかどうかを確認し、対応する分類を取得
+        if image_name in image_to_comment:
+            classification = image_to_comment[image_name]
+            st.write(classification)
+
+
+        else:
+            st.write("この画像に対する分類はマッピングされていません")
 
             # 予測されたテンソルの値を取得
         predicted_values = outputs.squeeze().tolist()
