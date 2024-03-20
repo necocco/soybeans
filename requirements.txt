@@ -11,4 +11,4 @@ python-multipart
 pyttsx3
 # pywin32
 pygame
-plotly>=4.14.3
+plotly

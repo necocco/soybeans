@@ -18,8 +18,7 @@ from torchmetrics.functional import accuracy
 import torch
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
-import playsound
+import plotly.graph_objects as govenv
 import plotly.express as px
 
 # モデルの定義
@@ -320,49 +319,23 @@ def main():
             # 音声再生が終了するまで待機
             while pygame.mixer.music.get_busy():
                 time.sleep(0.1)
-
-          
-        
+    
         #予測確率をグラフで表示   
         # 予測されたテンソルの値を取得
         predicted_values = outputs.squeeze().tolist()
 
-        
+        import plotly.express as px
+
         # 予測されたテンソルの値をPandasのDataFrameに変換
         data = {'Class': list(labels.values()), 'Probability': predicted_values}
         df = pd.DataFrame(data)
 
         # Plotlyを使用して棒グラフを作成し、幅を調整
-        fig = px.bar(df, x='Class', y='Probability')
-        fig.update_layout(width=500)  # 幅を調整
-        
+        fig = px.bar(df,x='Class', y='Probability', text='Probability')
+        fig.update_traces(texttemplate='%{text:.4f}', textposition='outside') # テキストのフォーマットを指定
+        fig.update_layout(height=550, width=500, title='Predicted Probabilities(予測確率)', yaxis=dict(title='予測した確率'))
 
-        # ラベルのクラスを取得
-        class_labels = list(labels.values())
-
-        # 予測確率を小数点第4位まで表示するために、predicted_valuesをフォーマットする
-        predicted_values_formatted = [f'{prob:.4f}' for prob in predicted_values]
-
-        # Plotlyのfigオブジェクトを作成
-        fig = go.Figure()
-
-        # バーを追加
-        fig.add_trace(go.Bar(
-            x=class_labels,
-            y=predicted_values,    
-            text=predicted_values_formatted,  # フォーマットした確率を表示
-            textposition='auto',  # テキストの位置を自動設定
-        ))
-
-        # レイアウトを設定
-        fig.update_layout(
-            title='Predicted Probabilities(予測確率)',
-            # xaxis=dict(title='Class'),
-            yaxis=dict(title='予測した確率'),
-        )
-
-
-       # StreamlitでPlotlyのグラフを表示
+        # StreamlitでPlotlyのグラフを表示
         st.plotly_chart(fig)
 
 
@@ -374,7 +347,7 @@ def main():
         # # st.bar_chart(df.set_index('Class'),height=0, width=320)
         # st.bar_chart(df.set_index('Class'), height=400, width=0.001)
 
-        # # st.write(f"予測: {outputs}")
+        # st.write(f"予測: {outputs}")
 
     
 if __name__ == "__main__":
