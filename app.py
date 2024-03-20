@@ -17,6 +17,8 @@ from torchmetrics.functional import accuracy
 import torch
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+
 
 # モデルの定義
 # ここでモデルのアーキテクチャを定義して、重みをロードする必要があります
@@ -358,20 +360,41 @@ def main():
         else:
             st.write("この画像に対する分類はマッピングされていません")
 
-            # 予測されたテンソルの値を取得
+                
+        #予測確率をグラフで表示   
+        # 予測されたテンソルの値を取得
         predicted_values = outputs.squeeze().tolist()
+
+        import plotly.express as px
 
         # 予測されたテンソルの値をPandasのDataFrameに変換
         data = {'Class': list(labels.values()), 'Probability': predicted_values}
         df = pd.DataFrame(data)
 
-        # バーグラフを表示
-        st.bar_chart(df.set_index('Class'),height=0, width=320)
-        # st.write(f"予測: {outputs}")
+        # マイナスとプラスの場合で色を変える関数を定義
+        def color_condition(probability):
+            return 'red' if probability < 0 else 'blue'
 
+        # Plotlyを使用して棒グラフを作成し、幅を調整
+        fig = px.bar(df,x='Class', y='Probability', text='Probability')
+        fig.update_traces(texttemplate='%{text:.4f}', textposition='outside') # テキストのフォーマットを指定
+        fig.update_layout(height=550, width=500, title='Predicted Probabilities(予測確率)', yaxis=dict(title='予測した確率'))
+        # バーの色を設定
+        fig.update_traces(marker=dict(color=df['Probability'].apply(color_condition)))
+        
+        # StreamlitでPlotlyのグラフを表示
+        st.plotly_chart(fig)
 
+        #     # 予測されたテンソルの値を取得
+        # predicted_values = outputs.squeeze().tolist()
 
+        # # 予測されたテンソルの値をPandasのDataFrameに変換
+        # data = {'Class': list(labels.values()), 'Probability': predicted_values}
+        # df = pd.DataFrame(data)
 
+        # # バーグラフを表示
+        # st.bar_chart(df.set_index('Class'),height=0, width=320)
+        # # st.write(f"予測: {outputs}")
    
 if __name__ == "__main__":
     main()
