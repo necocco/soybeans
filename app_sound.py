@@ -279,7 +279,7 @@ def main():
             st.write("**予測が正解と一致しました。**")
 
             # 一致した場合の音を再生
-            sound_file_correct = "./sound/QuizOK.mp3"  # 一致した場合の音声ファイルのパスを設定
+            sound_file_correct = "./sound/levelUP.mp3"  # 一致した場合の音声ファイルのパスを設定
             pygame.mixer.music.load(sound_file_correct)
             pygame.mixer.music.play()
 
@@ -320,34 +320,28 @@ def main():
             while pygame.mixer.music.get_busy():
                 time.sleep(0.1)
     
+                
         #予測確率をグラフで表示   
         # 予測されたテンソルの値を取得
         predicted_values = outputs.squeeze().tolist()
-
-        import plotly.express as px
 
         # 予測されたテンソルの値をPandasのDataFrameに変換
         data = {'Class': list(labels.values()), 'Probability': predicted_values}
         df = pd.DataFrame(data)
 
+        # マイナスとプラスの場合で色を変える関数を定義
+        def color_condition(probability):
+            return 'red' if probability < 0 else 'blue'
+
         # Plotlyを使用して棒グラフを作成し、幅を調整
         fig = px.bar(df,x='Class', y='Probability', text='Probability')
         fig.update_traces(texttemplate='%{text:.4f}', textposition='outside') # テキストのフォーマットを指定
         fig.update_layout(height=550, width=500, title='Predicted Probabilities(予測確率)', yaxis=dict(title='予測した確率'))
-
+        # バーの色を設定
+        fig.update_traces(marker=dict(color=df['Probability'].apply(color_condition)))
+        
         # StreamlitでPlotlyのグラフを表示
         st.plotly_chart(fig)
-
-
-        # # 予測されたテンソルの値をPandasのDataFrameに変換
-        # data = {'Class': list(labels.values()), 'Probability': predicted_values}
-        # df = pd.DataFrame(data)
-
-        # # バーグラフを表示
-        # # st.bar_chart(df.set_index('Class'),height=0, width=320)
-        # st.bar_chart(df.set_index('Class'), height=400, width=0.001)
-
-        # st.write(f"予測: {outputs}")
 
     
 if __name__ == "__main__":

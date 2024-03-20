@@ -365,8 +365,6 @@ def main():
         # 予測されたテンソルの値を取得
         predicted_values = outputs.squeeze().tolist()
 
-        import plotly.express as px
-
         # 予測されたテンソルの値をPandasのDataFrameに変換
         data = {'Class': list(labels.values()), 'Probability': predicted_values}
         df = pd.DataFrame(data)
