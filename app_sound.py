@@ -116,7 +116,7 @@ def main():
     if button:
      
         # 音声ファイルのリストを準備する
-        audio_files = ['./sound/ResNet34romanticFolk.mp3', './sound/resnet34chillReggae.mp3','./sound/resnet34sanba1.mp3','./sound/resnet34sanba2.mp3','./sound/ResNet34Folk.mp3','./sound/ResNet34upliftingMetal.mp3']
+        audio_files = ['./sound/resnet34afrobeat.mp3','./sound/resnet34groovyRumba1mer.mp3','./sound/ResNet34romanticFolk.mp3', './sound/resnet34chillReggae.mp3','./sound/resnet34sanba1.mp3','./sound/resnet34sanba2.mp3','./sound/ResNet34Folk.mp3','./sound/ResNet34upliftingMetal.mp3']
         
         # ランダムに音声ファイルを選択する
         audio_path = random.choice(audio_files) 
