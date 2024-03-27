@@ -53,9 +53,9 @@ import streamlit as st
 
 st.sidebar.write(':blue[**大豆選別のための画像判別アプリ**]')
 st.sidebar.write("予測結果は以下の４つに分けられます")
-st.sidebar.write("**・いい子**：良質な大豆")
-st.sidebar.write("**・ふつうの子**：味噌等の加工用に使える大豆")
-st.sidebar.write("**・わるい子**：品質が悪い大豆。鳥にあげましょう")
+st.sidebar.write("**・いい子**：良質な大豆。直売所で売りましょう")
+st.sidebar.write("**・ふつうの子**：味噌等の加工用に使える大豆です")
+st.sidebar.write("**・わるい子**：品質が悪い大豆。鳥さんにあげましょう")
 st.sidebar.write("**・Really?　Soybeans??**：あなたはだぁれ？")
 
 # 画像の読み込み
